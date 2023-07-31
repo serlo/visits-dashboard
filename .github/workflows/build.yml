@@ -37,11 +37,14 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
+      - name: Install 7zip
+        run: sudo apt-get install p7zip p7zip-full
+
       - name: Unzip
         run: |
           mkdir raw
           cat raw_2.zip.0* > raw_2.zip
-          unzip -P $STATS_ZIP_PW raw_2.zip -d raw
+          7z x -p $STATS_ZIP_PW raw_2.zip -o ./raw
 
       - name: Test
         run: |
