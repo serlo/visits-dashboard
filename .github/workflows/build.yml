@@ -46,9 +46,8 @@ jobs:
           mkdir raw
           cat raw_2.zip.0* > raw_2.zip
           7z x -p$STATS_ZIP_PW raw_2.zip -o./raw
-          ls
           cd raw
-          ls
+          tar -xvf raw.tar
 
       - name: Fetch recent data
         run: |
