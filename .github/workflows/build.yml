@@ -46,6 +46,10 @@ jobs:
           cat raw_2.zip.0* > raw_2.zip
           7z x -p$STATS_ZIP_PW raw_2.zip -o./raw
 
+      - name: Fetch recent data
+        run: |
+          node sa.js
+
       - name: Test
         run: |
           mkdir _output
