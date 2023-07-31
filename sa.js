@@ -65,7 +65,7 @@ function dateToLocaleDate(date) {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
-    timezone: 'Europe/Berlin',
+    timeZone: 'Europe/Berlin',
   }
   const formattedDate = date
     .toLocaleDateString('de-DE', options)
