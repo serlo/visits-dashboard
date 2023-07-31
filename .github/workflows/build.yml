@@ -31,6 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       STATS_ZIP_PW: ${{ secrets.STATS_ZIP_PW }}
+      SA_KEY: ${{ secrets.SA_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -45,6 +46,9 @@ jobs:
           mkdir raw
           cat raw_2.zip.0* > raw_2.zip
           7z x -p$STATS_ZIP_PW raw_2.zip -o./raw
+          ls
+          cd raw
+          ls
 
       - name: Fetch recent data
         run: |
