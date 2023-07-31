@@ -1,12 +1,8 @@
 const fs = require('fs')
 
-const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
-const formattedDate = new Date(Date.now() - 1000 * 60 * 60 * 24)
-  .toLocaleDateString('de-DE', options)
-  .split('.')
-  .reverse()
-  .join('-')
-
+const formattedDate = dateToLocaleDate(
+  new Date(Date.now() - 1000 * 60 * 60 * 24)
+)
 console.log('cutoff (yesterday)', formattedDate)
 
 const dates2022 = generateDateList('2023-07-20', formattedDate).reverse()
@@ -50,9 +46,8 @@ async function fetchStats(start, end) {
 function generateDateList(startDate, endDate) {
   const dateList = []
   const currentDate = new Date(startDate)
-  const targetDate = new Date(endDate)
 
-  while (currentDate <= targetDate) {
+  while (!dateList.includes(endDate)) {
     const year = currentDate.getFullYear()
     const month = String(currentDate.getMonth() + 1).padStart(2, '0')
     const day = String(currentDate.getDate()).padStart(2, '0')
@@ -63,4 +58,20 @@ function generateDateList(startDate, endDate) {
   }
 
   return dateList
+}
+
+function dateToLocaleDate(date) {
+  const options = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    timezone: 'Europe/Berlin',
+  }
+  const formattedDate = date
+    .toLocaleDateString('de-DE', options)
+    .split('.')
+    .reverse()
+    .join('-')
+
+  return formattedDate
 }
