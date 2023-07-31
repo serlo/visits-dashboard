@@ -29,19 +29,25 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
-    # env:
-    #   DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    env:
+      STATS_ZIP_PW: ${{ secrets.STATS_ZIP_PW }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
+      - name: Unzip
+        run: |
+          mkdir raw
+          cat raw_2.zip.0* > raw_2.zip
+          unzip -P $STATS_ZIP_PW raw_2.zip -d raw
+
       - name: Test
         run: |
           mkdir _output
           cd _output
-          echo "TEst" > index.html
+          echo "Test" > index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
