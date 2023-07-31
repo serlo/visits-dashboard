@@ -31,9 +31,7 @@ async function fetchStats(start, end) {
   )
   const json = await res.json()
 
-  console.log(json.ok, json.meta)
-
-  if (json.ok) {
+  if (json.ok || json.meta) {
     fs.writeFileSync(
       `./raw/deserloorg_${start}_${end}.json`,
       JSON.stringify(json)
@@ -41,7 +39,7 @@ async function fetchStats(start, end) {
   }
 }
 
-//fetchStats('2022-01-01', '2022-01-01')
+// --------- functions ------
 
 function generateDateList(startDate, endDate) {
   const dateList = []
