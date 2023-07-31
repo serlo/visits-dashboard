@@ -2,7 +2,7 @@ const fs = require('fs')
 
 const yesterday = new Date(Date.now() - 1000 * 60 * 60 * 24)
 const oldestDate = new Date(
-  yesterday.getTime() - 1000 * 60 * 60 * 24 * (365 * 2 + 89)
+  yesterday.getTime() - 1000 * 60 * 60 * 24 * (365 * 2 + 88)
 )
 
 const dates = generateDateList(
