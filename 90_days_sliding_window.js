@@ -2,7 +2,7 @@ const fs = require('fs')
 
 const yesterday = new Date(Date.now() - 1000 * 60 * 60 * 24)
 const oldestDate = new Date(
-  yesterday.getTime() - 1000 * 60 * 60 * 24 * (365 + 89)
+  yesterday.getTime() - 1000 * 60 * 60 * 24 * (365 * 2 + 89)
 )
 
 const dates = generateDateList(
@@ -11,6 +11,8 @@ const dates = generateDateList(
 ).reverse()
 
 console.log(dates[0], dates[dates.length - 1])
+
+console.log(dates)
 
 const dailyVisits = {}
 
