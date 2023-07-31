@@ -31,7 +31,7 @@ async function fetchStats(start, end) {
   )
   const json = await res.json()
 
-  console.log(json.ok)
+  console.log(json.ok, json.meta)
 
   if (json.ok) {
     fs.writeFileSync(

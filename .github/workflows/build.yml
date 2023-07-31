@@ -53,11 +53,18 @@ jobs:
         run: |
           node sa.js
 
-      - name: Test
+      - name: Create intermediate directory
+        run: mkdir intermediate
+
+      - name: Analyze 90-days-sliding
+        run: node 90_days_sliding_window.js
+
+      - name: Create output directory
         run: |
           mkdir _output
-          cd _output
-          echo "Test" > index.html
+
+      - name: Generate report
+        run: node generate_report.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
