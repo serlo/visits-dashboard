@@ -56,6 +56,15 @@ jobs:
       - name: Create intermediate directory
         run: mkdir intermediate
 
+      - name: Collect paths
+        run: node paths.js
+
+      - name: Extract uuids
+        run: node paths_extract_ids.js
+
+      - name: Fetch type for uuids
+        run: node fetch_uuid_types.js
+
       - name: Analyze 90-days-sliding
         run: node 90_days_sliding_window.js
 

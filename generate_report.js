@@ -26,7 +26,32 @@ const output = `
         <canvas id="chart2"></canvas>
       </div>
       
+      <h2>Absolute Anzahl Aufrufe für Artikel</h2>
+
+      <div style="width:100%;max-height:600px;position: relative;">
+        <canvas id="chart3"></canvas>
+      </div>
       
+      <h2>Relative Veränderung zum Vorjahr in Prozent für Artikel</h2>
+      
+      <div style="width:100%;max-height:600px;position: relative;">
+        <canvas id="chart3_rel"></canvas>
+      </div>
+
+      
+      <h2>Absolute Anzahl Aufrufe für Aufgabenordner</h2>
+
+      <div style="width:100%;max-height:600px;position: relative;">
+        <canvas id="chart4"></canvas>
+      </div>
+      
+      <h2>Relative Veränderung zum Vorjahr in Prozent für Aufgabenordner</h2>
+      
+      <div style="width:100%;max-height:600px;position: relative;">
+        <canvas id="chart4_rel"></canvas>
+      </div>
+
+
       
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       
@@ -71,7 +96,7 @@ const output = `
               backgroundColor(context) {
                 const index = context.dataIndex
                 const value = context.dataset.data[index]
-                return value < 0 ? 'red' : 'blue'
+                return value < 0 ? 'red' : 'green'
               }
             }]
           },
@@ -79,6 +104,121 @@ const output = `
             
           }
         });
+
+        const ctx3 = document.getElementById('chart3');
+
+        new Chart(ctx3, {
+          type: 'line',
+          data: {
+            labels: ${JSON.stringify(data.map((entry) => entry.date))},
+            datasets: [{
+              label: 'dieses Jahr',
+              data: ${JSON.stringify(
+                data.map((entry) => entry.sumThisYearByTag['Article'])
+              )},
+            },
+            {
+              label: 'letztes Jahr',
+              data: ${JSON.stringify(
+                data.map((entry) => entry.sumLastYearByTag['Article'])
+              )},
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        const ctx3_rel = document.getElementById('chart3_rel');
+
+        new Chart(ctx3_rel, {
+          type: 'bar',
+          data: {
+            labels: ${JSON.stringify(data.map((entry) => entry.date))},
+            datasets: [{
+              label: 'prozentuale Veränderung',
+              data: ${JSON.stringify(
+                data.map(
+                  (entry) =>
+                    (entry.sumThisYearByTag['Article'] /
+                      entry.sumLastYearByTag['Article'] -
+                      1) *
+                    100
+                )
+              )},
+              backgroundColor(context) {
+                const index = context.dataIndex
+                const value = context.dataset.data[index]
+                return value < 0 ? 'red' : 'green'
+              }
+            }]
+          },
+          options: {
+            
+          }
+        });
+
+        const ctx4 = document.getElementById('chart4');
+
+        new Chart(ctx4, {
+          type: 'line',
+          data: {
+            labels: ${JSON.stringify(data.map((entry) => entry.date))},
+            datasets: [{
+              label: 'dieses Jahr',
+              data: ${JSON.stringify(
+                data.map((entry) => entry.sumThisYearByTag['ExerciseFolder'])
+              )},
+            },
+            {
+              label: 'letztes Jahr',
+              data: ${JSON.stringify(
+                data.map((entry) => entry.sumLastYearByTag['ExerciseFolder'])
+              )},
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        const ctx4_rel = document.getElementById('chart4_rel');
+
+        new Chart(ctx4_rel, {
+          type: 'bar',
+          data: {
+            labels: ${JSON.stringify(data.map((entry) => entry.date))},
+            datasets: [{
+              label: 'prozentuale Veränderung',
+              data: ${JSON.stringify(
+                data.map(
+                  (entry) =>
+                    (entry.sumThisYearByTag['ExerciseFolder'] /
+                      entry.sumLastYearByTag['ExerciseFolder'] -
+                      1) *
+                    100
+                )
+              )},
+              backgroundColor(context) {
+                const index = context.dataIndex
+                const value = context.dataset.data[index]
+                return value < 0 ? 'red' : 'green'
+              }
+            }]
+          },
+          options: {
+            
+          }
+        });
+
       </script>
       
     </body>
