@@ -6,60 +6,84 @@ const rankings = require('./intermediate/rankings.json')
 
 data.sort((a, b) => a.date.localeCompare(b.date))
 
+const lastYear = data[data.length - 1].sumLastYear
+const thisYear = data[data.length - 1].sumThisYear
+
+const diff = thisYear - lastYear
+const percent = (thisYear / lastYear - 1) * 100
+
 const output = `
   <!doctype html>
   <html lang="de">
     <head>
     <meta charset=utf-8>
-    <title>Aufrufzahlen der letzten 2 Jahre in 90-Tage-Zeiträume</title>
+    <title>Reichweite und Entwicklung von Serlo</title>
     </head>
-    <body>
-      <h1>Aufrufzahlen der letzten 2 Jahre in 90-Tage-Zeiträume</h1>
+    <body style="margin-left:24px;maring-right:24px;">
+      <h1>Reichweite und Entwicklung von Serlo</h1>
+
+      <p>Stand: ${data[data.length - 1].date}</p>
+
+      <p style="font-size:24px;">Daten beziehen sich nur auf <strong>de.serlo.org</strong>. Es wird immer die Summe der Seitenaufrufe der letzten 90 Tage betrachtet. Der Vergleich findet mit dem Vorjahr statt.
+      </p>
+
+      <h2>Übersicht</h2>
+
+      <p>Aufrufe aktuell: ${thisYear}
+      </p>
       
-      <h2>Absolute Anzahl Aufrufe (90-Tage-Zeiträume bis zum Datum)</h2>
+      <p>Aufrufe Vorjahr: ${lastYear}
+      </p>
+
+      <p>Entwicklung: <span style="color:${percent > 0 ? 'green' : 'red'}">${
+  percent > 0 ? '+' : ''
+}<strong>${percent.toFixed(2)}%, ${diff}</strong></span>
+      </p>
+      
+      <h2>Anzahl Aufrufe</h2>
       
       <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart1"></canvas>
       </div>
       
-      <h2>Relative Veränderung zum Vorjahr in Prozent</h2>
+      <h2>Veränderung zum Vorjahr in Prozent</h2>
       
       <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart2"></canvas>
       </div>
 
-      <h2>Aufteilung nach Inhaltstypen</h2>
+      <h2>Anteil Inhaltstypen auf de.serlo.org</h2>
       
       <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart5"></canvas>
       </div>
       
-      <h2>Absolute Anzahl Aufrufe für Artikel</h2>
+      <h2>Artikel: Anzahl Aufrufe</h2>
 
       <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart3"></canvas>
       </div>
       
-      <h2>Relative Veränderung zum Vorjahr in Prozent für Artikel</h2>
+      <h2>Artikel: Veränderung zum Vorjahr in Prozent</h2>
       
       <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart3_rel"></canvas>
       </div>
 
       
-      <h2>Absolute Anzahl Aufrufe für Aufgabenordner</h2>
+      <h2>Aufgabenordner: Anzahl Aufrufe</h2>
 
       <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart4"></canvas>
       </div>
       
-      <h2>Relative Veränderung zum Vorjahr in Prozent für Aufgabenordner</h2>
+      <h2>Aufgabenordner: Veränderung zum Vorjahr in Prozent</h2>
       
       <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart4_rel"></canvas>
       </div>
 
-      <h2>Inhalte mit größtem Wachstum aktuell (90-Tage-Zeitraum)</h2>
+      <h2>Inhalte mit größtem Wachstum</h2>
 
       <table>
         <thead>
@@ -97,7 +121,7 @@ const output = `
         </tbody>
       </table>
 
-      <h2>Inhalte mit größten Verlusten aktuell (90-Tage-Zeitraum)</h2>
+      <h2>Inhalte mit größtem Verlust</h2>
 
       <table>
         <thead>
