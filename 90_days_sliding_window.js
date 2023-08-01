@@ -31,12 +31,20 @@ dates.forEach((date) => {
       const id = utils.pathToId(dp.path)
       if (id > 0) {
         const type = uuidIndex[id]
-        if ((type && type == 'Article') || type == 'ExerciseFolder') {
-          if (!byTag[type]) {
-            byTag[type] = 0
-            tags.add(type)
+        if (
+          type &&
+          (type == 'Article' ||
+            type == 'ExerciseFolder' ||
+            type == 'TaxonomyTerm' ||
+            type == 'CoursePage' ||
+            type == 'Course')
+        ) {
+          const t = type == 'Course' ? 'CoursePage' : type
+          if (!byTag[t]) {
+            byTag[t] = 0
+            tags.add(t)
           }
-          byTag[type]++
+          byTag[t]++
         }
       }
     })

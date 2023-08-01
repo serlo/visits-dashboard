@@ -25,6 +25,12 @@ const output = `
       <div style="width:100%;max-height:600px;position: relative;">
         <canvas id="chart2"></canvas>
       </div>
+
+      <h2>Aufteilung nach Inhaltstypen</h2>
+      
+      <div style="width:100%;max-height:600px;position: relative;">
+        <canvas id="chart5"></canvas>
+      </div>
       
       <h2>Absolute Anzahl Aufrufe für Artikel</h2>
 
@@ -216,6 +222,82 @@ const output = `
           },
           options: {
             
+          }
+        });
+
+        const ctx5 = document.getElementById('chart5');
+
+        new Chart(ctx5, {
+          type: 'bar',
+          data: {
+            labels: ${JSON.stringify(data.map((entry) => entry.date))},
+            datasets: [{
+              label: 'Artikel',
+              data: ${JSON.stringify(
+                data.map(
+                  (entry) =>
+                    (entry.sumThisYearByTag['Article'] / entry.sumThisYear) *
+                    100
+                )
+              )},
+            },
+            {
+              label: 'Aufgabenordner',
+              data: ${JSON.stringify(
+                data.map(
+                  (entry) =>
+                    (entry.sumThisYearByTag['ExerciseFolder'] /
+                      entry.sumThisYear) *
+                    100
+                )
+              )},
+            },{
+              label: 'Taxonomie',
+              data: ${JSON.stringify(
+                data.map(
+                  (entry) =>
+                    (entry.sumThisYearByTag['TaxonomyTerm'] /
+                      entry.sumThisYear) *
+                    100
+                )
+              )},
+            },{
+              label: 'Kurse',
+              data: ${JSON.stringify(
+                data.map(
+                  (entry) =>
+                    (entry.sumThisYearByTag['CoursePage'] / entry.sumThisYear) *
+                    100
+                )
+              )},
+            },{
+              label: 'Sonstiges',
+              data: ${JSON.stringify(
+                data.map(
+                  (entry) =>
+                    ((entry.sumThisYear -
+                      entry.sumThisYearByTag['Article'] -
+                      entry.sumThisYearByTag['ExerciseFolder'] -
+                      entry.sumThisYearByTag['TaxonomyTerm'] -
+                      entry.sumThisYearByTag['CoursePage']) /
+                      entry.sumThisYear) *
+                    100
+                )
+              )},
+            },]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: {
+                stacked: true,
+              },
+              y: {
+                stacked: true,
+                min: 0,
+                max: 100,
+              }
+            }
           }
         });
 
