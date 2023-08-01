@@ -52,7 +52,7 @@ const output = `
         <canvas id="chart2"></canvas>
       </div>
 
-      <h2>Anteil Inhaltstypen auf de.serlo.org</h2>
+      <h2>Aufrufe: Anteil pro Inhaltstyp</h2>
       
       <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart5"></canvas>
