@@ -16,44 +16,44 @@ const output = `
       
       <h2>Absolute Anzahl Aufrufe (90-Tage-Zeiträume bis zum Datum)</h2>
       
-      <div style="width:100%;max-height:600px;position: relative;">
+      <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart1"></canvas>
       </div>
       
       <h2>Relative Veränderung zum Vorjahr in Prozent</h2>
       
-      <div style="width:100%;max-height:600px;position: relative;">
+      <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart2"></canvas>
       </div>
 
       <h2>Aufteilung nach Inhaltstypen</h2>
       
-      <div style="width:100%;max-height:600px;position: relative;">
+      <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart5"></canvas>
       </div>
       
       <h2>Absolute Anzahl Aufrufe für Artikel</h2>
 
-      <div style="width:100%;max-height:600px;position: relative;">
+      <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart3"></canvas>
       </div>
       
       <h2>Relative Veränderung zum Vorjahr in Prozent für Artikel</h2>
       
-      <div style="width:100%;max-height:600px;position: relative;">
+      <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart3_rel"></canvas>
       </div>
 
       
       <h2>Absolute Anzahl Aufrufe für Aufgabenordner</h2>
 
-      <div style="width:100%;max-height:600px;position: relative;">
+      <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart4"></canvas>
       </div>
       
       <h2>Relative Veränderung zum Vorjahr in Prozent für Aufgabenordner</h2>
       
-      <div style="width:100%;max-height:600px;position: relative;">
+      <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart4_rel"></canvas>
       </div>
 
@@ -82,7 +82,8 @@ const output = `
               y: {
                 beginAtZero: true
               }
-            }
+            },
+            maintainAspectRatio: false,
           }
         });
         
@@ -107,7 +108,7 @@ const output = `
             }]
           },
           options: {
-            
+            maintainAspectRatio: false,
           }
         });
 
@@ -135,7 +136,8 @@ const output = `
               y: {
                 beginAtZero: true
               }
-            }
+            },
+            maintainAspectRatio: false,
           }
         });
 
@@ -164,7 +166,7 @@ const output = `
             }]
           },
           options: {
-            
+            maintainAspectRatio: false,
           }
         });
 
@@ -192,7 +194,8 @@ const output = `
               y: {
                 beginAtZero: true
               }
-            }
+            },
+            maintainAspectRatio: false,
           }
         });
 
@@ -221,7 +224,7 @@ const output = `
             }]
           },
           options: {
-            
+            maintainAspectRatio: false,
           }
         });
 
@@ -297,7 +300,8 @@ const output = `
                 min: 0,
                 max: 100,
               }
-            }
+            },
+            maintainAspectRatio: false,
           }
         });
 
