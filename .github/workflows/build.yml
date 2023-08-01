@@ -68,6 +68,9 @@ jobs:
       - name: Analyze 90-days-sliding
         run: node 90_days_sliding_window.js
 
+      - name: Lookup alias for rankings
+        run: node enrich_rankings.js
+
       - name: Create output directory
         run: |
           mkdir _output

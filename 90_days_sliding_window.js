@@ -17,7 +17,15 @@ const dates = utils
 
 console.log(dates[0], dates[dates.length - 1])
 
+const rankingDatesThisYear = dates.slice(0, 90)
+
+const rankingDatesLastYear = dates.slice(365, 365 + 90)
+
 const dailyVisits = {}
+
+const visitsByUuidThisYear = {}
+
+const visitsByUuidLastYear = {}
 
 const tags = new Set()
 
@@ -26,6 +34,7 @@ dates.forEach((date) => {
     const data = JSON.parse(
       fs.readFileSync(`./raw/deserloorg_${date}_${date}.json`, 'utf-8')
     )
+    console.log(date)
     const byTag = {}
     data.datapoints.forEach((dp) => {
       const id = utils.pathToId(dp.path)
@@ -45,6 +54,16 @@ dates.forEach((date) => {
             tags.add(t)
           }
           byTag[t]++
+        }
+
+        if (rankingDatesThisYear.includes(date)) {
+          if (!visitsByUuidThisYear[id]) visitsByUuidThisYear[id] = 0
+          visitsByUuidThisYear[id]++
+        }
+
+        if (rankingDatesLastYear.includes(date)) {
+          if (!visitsByUuidLastYear[id]) visitsByUuidLastYear[id] = 0
+          visitsByUuidLastYear[id]++
         }
       }
     })
@@ -90,4 +109,34 @@ fs.writeFileSync(
   JSON.stringify(output, null, 2)
 )
 
-// ----- functions
+// generate ranking
+const rankings = []
+
+for (const id in uuidIndex) {
+  if (visitsByUuidThisYear[id] || visitsByUuidLastYear[id]) {
+    rankings.push({
+      id,
+      type: uuidIndex[id],
+      visitsLastYear: visitsByUuidLastYear[id] || 0,
+      visitsThisYear: visitsByUuidThisYear[id] || 0,
+    })
+  }
+}
+
+rankings.sort(
+  (a, b) =>
+    b.visitsThisYear - b.visitsLastYear - (a.visitsThisYear - a.visitsLastYear)
+)
+
+const topWinners = rankings.slice(0, 30)
+
+const reversed = rankings.reverse()
+
+const topLosers = reversed.slice(0, 30)
+
+console.log(topWinners, topLosers)
+
+fs.writeFileSync(
+  './intermediate/rankings.json',
+  JSON.stringify({ topWinners, topLosers }, null, 2)
+)

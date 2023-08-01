@@ -2,6 +2,8 @@ const fs = require('fs')
 
 const data = require('./intermediate/90_days_sliding.json')
 
+const rankings = require('./intermediate/rankings.json')
+
 data.sort((a, b) => a.date.localeCompare(b.date))
 
 const output = `
@@ -57,7 +59,95 @@ const output = `
         <canvas id="chart4_rel"></canvas>
       </div>
 
+      <h2>Inhalte mit größtem Wachstum aktuell (90-Tage-Zeitraum)</h2>
 
+      <table>
+        <thead>
+          <tr>
+            <th>Platz</th>
+            <th>Inhalt</th>
+            <th>Typ</th>
+            <th>Aufrufe Vorjahr</th>
+            <th>Aufrufe dieses Jahr</th>
+            <th>Veränderung (relativ)</th>
+            <th>Veränderung (absolut)</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rankings.topWinners
+            .map((entry, i) => {
+              return `
+              <tr>
+                <td>${i + 1}</td>
+                <td>${decodeURIComponent(entry.alias)}</td>
+                <td>${entry.type}</td>
+                <td>${entry.visitsLastYear}</td>
+                <td>${entry.visitsThisYear}</td>
+                <td style="color: green">+ ${(
+                  (entry.visitsThisYear / entry.visitsLastYear - 1) *
+                  100
+                ).toFixed(2)}%</td>
+                <td style="color: green">+ ${
+                  entry.visitsThisYear - entry.visitsLastYear
+                }</td>
+              </tr>
+            `
+            })
+            .join('')}
+        </tbody>
+      </table>
+
+      <h2>Inhalte mit größten Verlusten aktuell (90-Tage-Zeitraum)</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Platz</th>
+            <th>Inhalt</th>
+            <th>Typ</th>
+            <th>Aufrufe Vorjahr</th>
+            <th>Aufrufe dieses Jahr</th>
+            <th>Veränderung (relativ)</th>
+            <th>Veränderung (absolut)</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rankings.topLosers
+            .map((entry, i) => {
+              return `
+              <tr>
+                <td>${i + 1}</td>
+                <td>${decodeURIComponent(entry.alias)}</td>
+                <td>${entry.type}</td>
+                <td>${entry.visitsLastYear}</td>
+                <td>${entry.visitsThisYear}</td>
+                <td style="color: red">${(
+                  (entry.visitsThisYear / entry.visitsLastYear - 1) *
+                  100
+                ).toFixed(2)}%</td>
+                <td style="color: red">${
+                  entry.visitsThisYear - entry.visitsLastYear
+                }</td>
+              </tr>
+            `
+            })
+            .join('')}
+        </tbody>
+      </table>
+
+      <div style="height:200px;"/>
+
+      <style>
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        td, th {
+          padding: 4px;
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+      </style>
       
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       
