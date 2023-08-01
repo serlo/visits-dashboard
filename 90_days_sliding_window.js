@@ -36,6 +36,8 @@ dates.forEach((date) => {
     )
     console.log(date)
     const byTag = {}
+    const needA = rankingDatesThisYear.includes(date)
+    const needB = rankingDatesLastYear.includes(date)
     data.datapoints.forEach((dp) => {
       const id = utils.pathToId(dp.path)
       if (id > 0) {
@@ -56,12 +58,12 @@ dates.forEach((date) => {
           byTag[t]++
         }
 
-        if (rankingDatesThisYear.includes(date)) {
+        if (needA) {
           if (!visitsByUuidThisYear[id]) visitsByUuidThisYear[id] = 0
           visitsByUuidThisYear[id]++
         }
 
-        if (rankingDatesLastYear.includes(date)) {
+        if (needB) {
           if (!visitsByUuidLastYear[id]) visitsByUuidLastYear[id] = 0
           visitsByUuidLastYear[id]++
         }
