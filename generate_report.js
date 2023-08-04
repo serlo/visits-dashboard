@@ -19,7 +19,7 @@ const output = `
     <meta charset=utf-8>
     <title>Reichweite und Entwicklung von Serlo</title>
     </head>
-    <body style="margin-left:24px;maring-right:24px;">
+    <body style="margin-left:24px;margin-right:24px;">
       <h1>Reichweite und Entwicklung von Serlo</h1>
 
       <p>Stand: ${data[data.length - 1].date}</p>
@@ -81,6 +81,20 @@ const output = `
       
       <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart4_rel"></canvas>
+      </div>
+
+      
+      
+      <h2>Aufgabenordner Realschule/Mittelschule: Anzahl Aufrufe</h2>
+
+      <div style="width:100%;height:600px;position: relative;">
+        <canvas id="chart6"></canvas>
+      </div>
+      
+      <h2>Aufgabenordner Realschule/Mittelschule: Veränderung zum Vorjahr in Prozent</h2>
+      
+      <div style="width:100%;height:600px;position: relative;">
+        <canvas id="chart6_rel"></canvas>
       </div>
 
       <h2>Inhalte mit größtem Wachstum</h2>
@@ -415,6 +429,59 @@ const output = `
                 max: 100,
               }
             },
+            maintainAspectRatio: false,
+          }
+        });
+
+        
+
+        const ctx6 = document.getElementById('chart6');
+
+        new Chart(ctx6, {
+          type: 'line',
+          data: {
+            labels: ${JSON.stringify(data.map((entry) => entry.date))},
+            datasets: [{
+              label: 'dieses Jahr',
+              data: ${JSON.stringify(data.map((entry) => entry.sumThisYearRM))},
+            },
+            {
+              label: 'letztes Jahr',
+              data: ${JSON.stringify(data.map((entry) => entry.sumLastYearRM))},
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            },
+            maintainAspectRatio: false,
+          }
+        });
+
+        const ctx6_rel = document.getElementById('chart6_rel');
+
+        new Chart(ctx6_rel, {
+          type: 'bar',
+          data: {
+            labels: ${JSON.stringify(data.map((entry) => entry.date))},
+            datasets: [{
+              label: 'prozentuale Veränderung',
+              data: ${JSON.stringify(
+                data.map(
+                  (entry) =>
+                    (entry.sumThisYearRM / entry.sumLastYearRM - 1) * 100
+                )
+              )},
+              backgroundColor(context) {
+                const index = context.dataIndex
+                const value = context.dataset.data[index]
+                return value < 0 ? 'red' : 'green'
+              }
+            }]
+          },
+          options: {
             maintainAspectRatio: false,
           }
         });

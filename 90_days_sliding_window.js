@@ -3,6 +3,8 @@ const utils = require('./utils')
 
 const uuidIndex = require('./uuid_index.json')
 
+const ids = require('./realschule_mittelschule_aufgabenordner.json')
+
 const yesterday = new Date(Date.now() - 1000 * 60 * 60 * 24)
 const oldestDate = new Date(
   yesterday.getTime() - 1000 * 60 * 60 * 24 * (365 * 2 + 88)
@@ -38,9 +40,14 @@ dates.forEach((date) => {
     const byTag = {}
     const needA = rankingDatesThisYear.includes(date)
     const needB = rankingDatesLastYear.includes(date)
+    let realschule_mittelschule = 0
     data.datapoints.forEach((dp) => {
       const id = utils.pathToId(dp.path)
       if (id > 0) {
+        if (ids.includes(id)) {
+          realschule_mittelschule++
+        }
+
         const type = uuidIndex[id]
         if (
           type &&
@@ -69,7 +76,11 @@ dates.forEach((date) => {
         }
       }
     })
-    dailyVisits[date] = { sum: data.meta.amount, byTag }
+    dailyVisits[date] = {
+      sum: data.meta.amount,
+      byTag,
+      realschule_mittelschule,
+    }
   } catch (e) {}
 })
 
@@ -78,6 +89,9 @@ const output = []
 for (let i = 0; i + 89 + 365 < dates.length; i++) {
   let sumThisYear = 0
   let sumLastYear = 0
+
+  let sumThisYearRM = 0
+  let sumLastYearRM = 0
 
   let sumThisYearByTag = {}
   let sumLastYearByTag = {}
@@ -91,6 +105,10 @@ for (let i = 0; i + 89 + 365 < dates.length; i++) {
     sumThisYear += dailyVisits[dates[i + j]].sum || 0
     sumLastYear += dailyVisits[dates[i + j + 365]].sum || 0
 
+    sumThisYearRM += dailyVisits[dates[i + j]].realschule_mittelschule || 0
+    sumLastYearRM +=
+      dailyVisits[dates[i + j + 365]].realschule_mittelschule || 0
+
     for (const tag of tags) {
       sumThisYearByTag[tag] += dailyVisits[dates[i + j]].byTag[tag] || 0
       sumLastYearByTag[tag] += dailyVisits[dates[i + j + 365]].byTag[tag] || 0
@@ -101,6 +119,8 @@ for (let i = 0; i + 89 + 365 < dates.length; i++) {
     date: dates[i],
     sumThisYear,
     sumLastYear,
+    sumLastYearRM,
+    sumThisYearRM,
     sumThisYearByTag,
     sumLastYearByTag,
   })
