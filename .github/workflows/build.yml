@@ -78,6 +78,9 @@ jobs:
       - name: Generate report
         run: node generate_report.js
 
+      - name: Generate details report
+        run: node generate_report_rm.js
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:

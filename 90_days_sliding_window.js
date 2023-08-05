@@ -3,7 +3,7 @@ const utils = require('./utils')
 
 const uuidIndex = require('./uuid_index.json')
 
-const ids = require('./realschule_mittelschule_aufgabenordner.json')
+const RM_ids = require('./realschule_mittelschule_aufgabenordner.json')
 
 const yesterday = new Date(Date.now() - 1000 * 60 * 60 * 24)
 const oldestDate = new Date(
@@ -38,14 +38,18 @@ dates.forEach((date) => {
     )
     console.log(date)
     const byTag = {}
+
+    const byId = {}
     const needA = rankingDatesThisYear.includes(date)
     const needB = rankingDatesLastYear.includes(date)
     let realschule_mittelschule = 0
     data.datapoints.forEach((dp) => {
       const id = utils.pathToId(dp.path)
       if (id > 0) {
-        if (ids.includes(id)) {
+        if (RM_ids.includes(id)) {
           realschule_mittelschule++
+          if (!byId[id]) byId[id] = 0
+          byId[id]++
         }
 
         const type = uuidIndex[id]
@@ -80,6 +84,7 @@ dates.forEach((date) => {
       sum: data.meta.amount,
       byTag,
       realschule_mittelschule,
+      byId,
     }
   } catch (e) {}
 })
@@ -96,9 +101,17 @@ for (let i = 0; i + 89 + 365 < dates.length; i++) {
   let sumThisYearByTag = {}
   let sumLastYearByTag = {}
 
+  let sumThisYearByUuid = {}
+  let sumLastYearByUuid = {}
+
   for (const tag of tags) {
     sumThisYearByTag[tag] = 0
     sumLastYearByTag[tag] = 0
+  }
+
+  for (const id of RM_ids) {
+    sumThisYearByUuid[id] = 0
+    sumLastYearByUuid[id] = 0
   }
 
   for (let j = 0; j < 90; j++) {
@@ -113,6 +126,11 @@ for (let i = 0; i + 89 + 365 < dates.length; i++) {
       sumThisYearByTag[tag] += dailyVisits[dates[i + j]].byTag[tag] || 0
       sumLastYearByTag[tag] += dailyVisits[dates[i + j + 365]].byTag[tag] || 0
     }
+
+    for (const id of RM_ids) {
+      sumThisYearByUuid[id] += dailyVisits[dates[i + j]].byId[id] || 0
+      sumLastYearByUuid[id] += dailyVisits[dates[i + j + 365]].byId[id] || 0
+    }
   }
 
   output.push({
@@ -123,6 +141,8 @@ for (let i = 0; i + 89 + 365 < dates.length; i++) {
     sumThisYearRM,
     sumThisYearByTag,
     sumLastYearByTag,
+    sumThisYearByUuid,
+    sumLastYearByUuid,
   })
 }
 
