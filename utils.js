@@ -49,8 +49,79 @@ function pathToId(path) {
   return id
 }
 
+const searchEngines = [
+  'http://bing.com/',
+  'http://ecosia.org/',
+  'http://duckduckgo.com/',
+  'http://startpage.com/',
+  'http://search.brave.com/',
+  'http://de.search.yahoo.com/',
+  'http://suche.t-online.de/',
+  'http://at.search.yahoo.com/',
+  'http://qwant.com/',
+  'http://ch.search.yahoo.com/',
+  'http://search.yahoo.com/',
+  'http://r.search.yahoo.com/',
+  'http://fragfinn.de/',
+  'http://android-app//com.google.android.googlequicksearchbox/',
+  'http://bing.com/search',
+]
+
+const lms = [
+  'http://lernwelt.biz/',
+  'http://lernplattform.mebis.bayern.de/',
+  'http://resource.itslearning.com/',
+  'http://bildungsserver.de/',
+  'http://applications.itslearning.com/',
+  'http://classroom.google.com/',
+  'http://bildungsserver.hamburg.de/',
+  'http://taskcards.de/',
+  'http://assignments.onenote.com/',
+  'http://start.schulportal.hessen.de/',
+  'http://oembeditslearning.com/',
+  'http://lernwelt.biz/schulnetz/ERSMerzig/default.aspx',
+  'http://lms.bildung-rp.de/',
+  'http://lms.lernen.hamburg/',
+  'http://eduvidual.at/',
+  'http://page.itslearning.com/',
+  'http://learningview.org/',
+  'http://hb.itslearning.com/',
+  'http://jsg-karlstadt.de/',
+  'http://mint-erleben.lu.ch/',
+  'http://moodle.bildung-lsa.de/',
+  'http://statics.teams.cdn.office.net/',
+  'http://login.schulmanager-online.de/',
+  'http://lernraum-berlin.de/',
+  'http://moodle.fhnw.ch/',
+  'http://elearning-mcg.de/',
+  'http://teams.microsoft.com/',
+  'http://lms2.schulcampus-rlp.de/',
+  'http://moodle.hs-anhalt.de/',
+  'http://redirect.homeworker.li/',
+  'http://assignment.itslearning.com/',
+]
+
+function tagReferrer(r) {
+  if (!r) return 'no referrer'
+
+  if (r.startsWith('http://de.serlo.org')) {
+    return 'internal'
+  }
+
+  if (r.startsWith('http://google') || searchEngines.includes(r)) {
+    return 'search'
+  }
+
+  if (lms.includes(r)) {
+    return 'lms & co.'
+  }
+
+  return 'sonstige'
+}
+
 module.exports = {
   generateDateList,
   dateToLocaleDate,
   pathToId,
+  tagReferrer,
 }

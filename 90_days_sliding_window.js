@@ -40,10 +40,17 @@ dates.forEach((date) => {
     const byTag = {}
 
     const byId = {}
+
+    const byReferrer = {}
+
     const needA = rankingDatesThisYear.includes(date)
     const needB = rankingDatesLastYear.includes(date)
     let realschule_mittelschule = 0
     data.datapoints.forEach((dp) => {
+      const referrer = utils.tagReferrer(dp.document_referrer)
+      if (!byReferrer[referrer]) byReferrer[referrer] = 0
+      byReferrer[referrer]++
+
       const id = utils.pathToId(dp.path)
       if (id > 0) {
         if (RM_ids.includes(id)) {
@@ -80,13 +87,17 @@ dates.forEach((date) => {
         }
       }
     })
+
     dailyVisits[date] = {
       sum: data.meta.amount,
       byTag,
       realschule_mittelschule,
       byId,
+      byReferrer,
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e)
+  }
 })
 
 const output = []
@@ -103,6 +114,20 @@ for (let i = 0; i + 89 + 365 < dates.length; i++) {
 
   let sumThisYearByUuid = {}
   let sumLastYearByUuid = {}
+
+  let sumThisYearByReferrer = {}
+
+  const referrer = [
+    'no referrer',
+    'search',
+    'internal',
+    'lms & co.',
+    'sonstige',
+  ]
+
+  for (const r of referrer) {
+    sumThisYearByReferrer[r] = 0
+  }
 
   for (const tag of tags) {
     sumThisYearByTag[tag] = 0
@@ -131,6 +156,10 @@ for (let i = 0; i + 89 + 365 < dates.length; i++) {
       sumThisYearByUuid[id] += dailyVisits[dates[i + j]].byId[id] || 0
       sumLastYearByUuid[id] += dailyVisits[dates[i + j + 365]].byId[id] || 0
     }
+
+    for (const r of referrer) {
+      sumThisYearByReferrer[r] += dailyVisits[dates[i + j]].byReferrer[r] || 0
+    }
   }
 
   output.push({
@@ -143,6 +172,7 @@ for (let i = 0; i + 89 + 365 < dates.length; i++) {
     sumLastYearByTag,
     sumThisYearByUuid,
     sumLastYearByUuid,
+    sumThisYearByReferrer,
   })
 }
 
@@ -176,7 +206,7 @@ const reversed = rankings.reverse()
 
 const topLosers = reversed.slice(0, 30)
 
-console.log(topWinners, topLosers)
+//console.log(topWinners, topLosers)
 
 fs.writeFileSync(
   './intermediate/rankings.json',

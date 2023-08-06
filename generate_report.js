@@ -97,6 +97,8 @@ const output = `
         <canvas id="chart6_rel"></canvas>
       </div>
 
+      <p><a href="https://serlo.github.io/visits-dashboard/details" target="_blank">Detailsauswertung von Inhalten aus Realschule/Mittelschule</a></p>
+
       <h2>Inhalte mit größtem Wachstum</h2>
 
       <table>
@@ -172,6 +174,13 @@ const output = `
             .join('')}
         </tbody>
       </table>
+
+      
+      <h2>Referrer nach Kategorie (Validierung in progress)</h2>
+      
+      <div style="width:100%;height:600px;position: relative;">
+        <canvas id="chart_referrer"></canvas>
+      </div>
 
       <div style="height:200px;"/>
 
@@ -482,6 +491,54 @@ const output = `
             }]
           },
           options: {
+            maintainAspectRatio: false,
+          }
+        });
+
+        const ctx_referrer = document.getElementById('chart_referrer');
+
+        new Chart(ctx_referrer, {
+          type: 'bar',
+          data: {
+            labels: ${JSON.stringify(data.map((entry) => entry.date))},
+            datasets: [{
+              label: 'Suchmaschine',
+              data: ${JSON.stringify(
+                data.map((entry) => entry.sumThisYearByReferrer['search'])
+              )},
+            },{
+              label: 'Interne Verlinkung',
+              data: ${JSON.stringify(
+                data.map((entry) => entry.sumThisYearByReferrer['internal'])
+              )},
+            },{
+              label: 'Kein Referrer',
+              data: ${JSON.stringify(
+                data.map((entry) => entry.sumThisYearByReferrer['no referrer'])
+              )},
+            },
+            {
+              label: 'LMS & Co.',
+              data: ${JSON.stringify(
+                data.map((entry) => entry.sumThisYearByReferrer['lms & co.'])
+              )},
+            },{
+              label: 'Sonstige externe Webseite',
+              data: ${JSON.stringify(
+                data.map((entry) => entry.sumThisYearByReferrer['sonstige'])
+              )},
+            },]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: {
+                stacked: true,
+              },
+              y: {
+                stacked: true,
+              }
+            },
             maintainAspectRatio: false,
           }
         });
