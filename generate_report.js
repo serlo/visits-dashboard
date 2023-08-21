@@ -176,7 +176,7 @@ const output = `
       </table>
 
       
-      <h2>Referrer nach Kategorie (Validierung in progress)</h2>
+      <h2>Referrer nach Kategorie (Daten vor August 2023 nicht akkurat)</h2>
       
       <div style="width:100%;height:600px;position: relative;">
         <canvas id="chart_referrer"></canvas>
