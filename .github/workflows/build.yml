@@ -81,6 +81,12 @@ jobs:
       - name: Generate details report
         run: node generate_report_rm.js
 
+      - name: Copy builds for raw cache
+        run: node copy_files_for_raw_cache.js
+
+      - name: Compress raw cache
+        run: 7z a -p$STATS_ZIP_PW _output/rawcache.7z ./raw_cache/*
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
