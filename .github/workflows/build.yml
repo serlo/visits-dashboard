@@ -44,10 +44,8 @@ jobs:
       - name: Unzip
         run: |
           mkdir raw
-          cat raw_2.zip.0* > raw_2.zip
-          7z x -p$STATS_ZIP_PW raw_2.zip -o./raw
-          cd raw
-          tar -xvf raw.tar
+          wget https://serlo.github.io/visits-dashboard/rawcache.7z
+          7z x -p$STATS_ZIP_PW rawcache.7z -o./raw
 
       - name: Fetch recent data
         run: |
@@ -81,7 +79,7 @@ jobs:
       - name: Generate details report
         run: node generate_report_rm.js
 
-      - name: Copy builds for raw cache
+      - name: Copy files for raw cache
         run: node copy_files_for_raw_cache.js
 
       - name: Compress raw cache
