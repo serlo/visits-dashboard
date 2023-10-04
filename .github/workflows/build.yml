@@ -84,7 +84,7 @@ jobs:
 
       - name: Compress raw cache
         run: |
-          7z u rawcache.z7 ./raw_cache/* -uq0 -p$STATS_ZIP_PW
+          7z u rawcache.7z ./raw_cache/* -uq0 -p$STATS_ZIP_PW -ssw
           mv rawcache.7z _output/rawcache.7z
 
       - name: Upload artifact
