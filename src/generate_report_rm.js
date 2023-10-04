@@ -1,8 +1,8 @@
 const fs = require('fs')
 
-const data = require('./intermediate/90_days_sliding.json')
-const RM_ids = require('./realschule_mittelschule_aufgabenordner.json')
-const index = require('./rm_url_index.json')
+const data = require('../intermediate/90_days_sliding.json')
+const RM_ids = require('../realschule_mittelschule_aufgabenordner.json')
+const index = require('../rm_url_index.json')
 
 data.sort((a, b) => a.date.localeCompare(b.date))
 

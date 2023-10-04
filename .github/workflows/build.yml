@@ -49,38 +49,38 @@ jobs:
 
       - name: Fetch recent data
         run: |
-          node sa.js
+          node src/sa.js
 
       - name: Create intermediate directory
         run: mkdir intermediate
 
       - name: Collect paths
-        run: node paths.js
+        run: node src/paths.js
 
       - name: Extract uuids
-        run: node paths_extract_ids.js
+        run: node src/paths_extract_ids.js
 
       - name: Fetch type for uuids
-        run: node fetch_uuid_types.js
+        run: node src/fetch_uuid_types.js
 
       - name: Analyze 90-days-sliding
-        run: node 90_days_sliding_window.js
+        run: node src/90_days_sliding_window.js
 
       - name: Lookup alias for rankings
-        run: node enrich_rankings.js
+        run: node src/enrich_rankings.js
 
       - name: Create output directory
         run: |
           mkdir _output
 
       - name: Generate report
-        run: node generate_report.js
+        run: node src/generate_report.js
 
       - name: Generate details report
-        run: node generate_report_rm.js
+        run: node src/generate_report_rm.js
 
       - name: Copy files for raw cache
-        run: node copy_files_for_raw_cache.js
+        run: node src/copy_files_for_raw_cache.js
 
       - name: Compress raw cache
         run: 7z a -p$STATS_ZIP_PW _output/rawcache.7z ./raw_cache/*

@@ -1,7 +1,7 @@
 const fs = require('fs')
 const utils = require('./utils')
 
-const paths = require('./intermediate/paths.json')
+const paths = require('../intermediate/paths.json')
 
 const uuids = new Set()
 

@@ -1,8 +1,8 @@
 const fs = require('fs')
 
-const uuidIndex = require('./uuid_index.json')
+const uuidIndex = require('../uuid_index.json')
 
-const uuids = require('./intermediate/uuids.json')
+const uuids = require('../intermediate/uuids.json')
 
 console.log(
   'uuids',

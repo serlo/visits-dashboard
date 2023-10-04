@@ -1,8 +1,8 @@
 const fs = require('fs')
 
-const data = require('./intermediate/90_days_sliding.json')
+const data = require('../intermediate/90_days_sliding.json')
 
-const rankings = require('./intermediate/rankings.json')
+const rankings = require('../intermediate/rankings.json')
 
 data.sort((a, b) => a.date.localeCompare(b.date))
 

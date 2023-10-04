@@ -1,5 +1,5 @@
 const fs = require('fs')
-const rankings = require('./intermediate/rankings.json')
+const rankings = require('../intermediate/rankings.json')
 
 run()
 

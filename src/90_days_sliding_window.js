@@ -1,9 +1,9 @@
 const fs = require('fs')
 const utils = require('./utils')
 
-const uuidIndex = require('./uuid_index.json')
+const uuidIndex = require('../uuid_index.json')
 
-const RM_ids = require('./realschule_mittelschule_aufgabenordner.json')
+const RM_ids = require('../realschule_mittelschule_aufgabenordner.json')
 
 const yesterday = new Date(Date.now() - 1000 * 60 * 60 * 24)
 const oldestDate = new Date(

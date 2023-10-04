@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-const RM_ids = require('./realschule_mittelschule_aufgabenordner.json')
+const RM_ids = require('../realschule_mittelschule_aufgabenordner.json')
 
 const index = {}
 
