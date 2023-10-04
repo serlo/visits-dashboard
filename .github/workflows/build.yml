@@ -83,7 +83,9 @@ jobs:
         run: node src/copy_files_for_raw_cache.js
 
       - name: Compress raw cache
-        run: 7z a -p$STATS_ZIP_PW _output/rawcache.7z ./raw_cache/*
+        run: |
+          7z u rawcache.z7 ./raw_cache/* -uq0 -p$STATS_ZIP_PW
+          mv rawcache.7z _output/rawcache.7z
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
