@@ -85,10 +85,10 @@ jobs:
 
       - name: Compress raw cache
         run: |
-          ls -l
           7z u rawcache.7z ./raw_cache/* -uq0y1 -p$STATS_ZIP_PW -ssw -ms=off
           mv rawcache.7z _output/rawcache.7z
           cp uuid_index.json _output/uuid_index.json
+          cp ./intermediate/alias_cache.json ./_output/alias_cache.json
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
