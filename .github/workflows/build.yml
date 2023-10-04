@@ -44,7 +44,7 @@ jobs:
       - name: Unzip
         run: |
           mkdir raw
-          wget https://serlo.github.io/visits-dashboard/rawcache.7z
+          wget -nv https://serlo.github.io/visits-dashboard/rawcache.7z
           7z x -p$STATS_ZIP_PW rawcache.7z -o./raw
 
       - name: Fetch recent data
@@ -84,9 +84,9 @@ jobs:
 
       - name: Compress raw cache
         run: |
-          rm rawcache.7z
           7z u rawcache.7z ./raw_cache/* -uq0 -p$STATS_ZIP_PW -ssw -ms=off
           mv rawcache.7z _output/rawcache.7z
+          cp uuid_index.json _output/uuid_index.json
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
