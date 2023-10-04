@@ -45,6 +45,7 @@ jobs:
         run: |
           mkdir raw
           wget -nv https://serlo.github.io/visits-dashboard/rawcache.7z
+          wget -N -O uuid_index.json -nv https://serlo.github.io/visits-dashboard/uuid_index.json
           7z x -p$STATS_ZIP_PW rawcache.7z -o./raw
 
       - name: Fetch recent data
