@@ -3,3 +3,4 @@ intermediate
 _output
 *.7z
 node_modules
+alias_cache.json
