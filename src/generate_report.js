@@ -83,6 +83,8 @@ const output = `
         <canvas id="chart4_rel"></canvas>
       </div>
 
+      <p><a href="https://serlo.github.io/visits-dashboard/details_all" target="_blank">Detailsauswertung aller Aufgabenordner</a></p>
+
       
       
       <h2>Aufgabenordner Realschule/Mittelschule: Anzahl Aufrufe</h2>

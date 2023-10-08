@@ -5,6 +5,18 @@ const uuidIndex = require('../uuid_index.json')
 
 const RM_ids = require('../realschule_mittelschule_aufgabenordner.json')
 
+const exerciseFolderIds = Object.entries(require('../uuid_index.json'))
+  .filter((entry) => entry[1] == 'ExerciseFolder')
+  .map((entry) => parseInt(entry[0]))
+
+console.log(exerciseFolderIds.length)
+
+const idsSet = new Set()
+RM_ids.forEach((id) => idsSet.add(id))
+exerciseFolderIds.forEach((id) => idsSet.add(id))
+
+const ids = Array.from(idsSet)
+
 const yesterday = new Date(Date.now() - 1000 * 60 * 60 * 24)
 const oldestDate = new Date(
   yesterday.getTime() - 1000 * 60 * 60 * 24 * (365 * 2 + 88)
@@ -53,8 +65,11 @@ dates.forEach((date) => {
 
       const id = utils.pathToId(dp.path)
       if (id > 0) {
-        if (RM_ids.includes(id)) {
+        const inRM = RM_ids.includes(id)
+        if (inRM) {
           realschule_mittelschule++
+        }
+        if (inRM || exerciseFolderIds.includes(id)) {
           if (!byId[id]) byId[id] = 0
           byId[id]++
         }
@@ -134,7 +149,7 @@ for (let i = 0; i + 89 + 365 < dates.length; i++) {
     sumLastYearByTag[tag] = 0
   }
 
-  for (const id of RM_ids) {
+  for (const id of ids) {
     sumThisYearByUuid[id] = 0
     sumLastYearByUuid[id] = 0
   }
@@ -152,7 +167,7 @@ for (let i = 0; i + 89 + 365 < dates.length; i++) {
       sumLastYearByTag[tag] += dailyVisits[dates[i + j + 365]].byTag[tag] || 0
     }
 
-    for (const id of RM_ids) {
+    for (const id of ids) {
       sumThisYearByUuid[id] += dailyVisits[dates[i + j]].byId[id] || 0
       sumLastYearByUuid[id] += dailyVisits[dates[i + j + 365]].byId[id] || 0
     }
