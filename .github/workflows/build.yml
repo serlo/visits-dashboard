@@ -84,6 +84,9 @@ jobs:
       - name: Generate details all
         run: node src/generate_report_exercise_folders.js
 
+      - name: Generate details for all
+        run: node src/generate_report_for_every_folder.js
+
       - name: Copy files for raw cache
         run: node src/copy_files_for_raw_cache.js
 
